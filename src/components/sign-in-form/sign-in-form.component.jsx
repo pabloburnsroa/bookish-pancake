@@ -1,6 +1,9 @@
 import './sign-in-form.styles.scss';
 import FormInput from '../form-input/form-input.component';
+// import { useContext } from 'react';
 import { useState } from 'react';
+// UserContext will give back whatever is passed in as the value in UserContext.Provider - currentUser, setCurrentUser
+// import { UserContext } from '../../contexts/user.context';
 import Button from '../button/button.component';
 import {
   createUserDocFromAuth,
@@ -16,12 +19,14 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
+  // const { setCurrentUser } = useContext(UserContext);
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
 
   const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup();
+    // setCurrentUser(user);
     await createUserDocFromAuth(user);
   };
 
@@ -29,8 +34,8 @@ const SignInForm = () => {
     e.preventDefault();
 
     try {
-      const response = await signAuthUserWithEmailandPassword(email, password);
-      console.log(response);
+      await signAuthUserWithEmailandPassword(email, password);
+      // setCurrentUser(user);
       resetFormFields();
     } catch (error) {
       switch (error.code) {

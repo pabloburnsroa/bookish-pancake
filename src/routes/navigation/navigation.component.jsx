@@ -1,11 +1,21 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { UserContext } from '../../contexts/user.context';
+import { signOutUser } from '../../util/firebase/firebase.utils';
 
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 
 import './navigation.styles.scss';
 
 const Navigation = () => {
+  // Access a user if signed-in
+  const { currentUser } = useContext(UserContext);
+
+  // No longer need this handler as onAuthStateChanged listener will trigger any changes to auth
+  // const signOutHandler = async () => {
+  //   await signOutUser();
+  //   setCurrentUser(null);
+  // };
   return (
     <Fragment>
       <div className="navigation">
@@ -16,9 +26,15 @@ const Navigation = () => {
           <Link to="/shop" className="nav-link">
             SHOP
           </Link>
-          <Link to="/auth" className="nav-link">
-            SIGN-IN
-          </Link>
+          {currentUser ? (
+            <span onClick={signOutUser} className="nav-link">
+              SIGN-OUT
+            </span>
+          ) : (
+            <Link to="/auth" className="nav-link">
+              SIGN-IN
+            </Link>
+          )}
         </div>
       </div>
       <Outlet />
