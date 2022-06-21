@@ -6,10 +6,14 @@ import { signOutUser } from '../../util/firebase/firebase.utils';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 
 import './navigation.styles.scss';
+import CartIcon from '../../components/cart-icon/cart-icon.component';
+import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
+import { CartContext } from '../../contexts/cart.context';
 
 const Navigation = () => {
   // Access a user if signed-in
   const { currentUser } = useContext(UserContext);
+  const { isCartOpen } = useContext(CartContext);
 
   // No longer need this handler as onAuthStateChanged listener will trigger any changes to auth
   // const signOutHandler = async () => {
@@ -35,7 +39,10 @@ const Navigation = () => {
               SIGN-IN
             </Link>
           )}
+          <CartIcon />
         </div>
+
+        {isCartOpen && <CartDropdown />}
       </div>
       <Outlet />
     </Fragment>
