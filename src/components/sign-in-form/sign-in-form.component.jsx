@@ -4,7 +4,7 @@ import FormInput from '../form-input/form-input.component';
 import { useState } from 'react';
 // UserContext will give back whatever is passed in as the value in UserContext.Provider - currentUser, setCurrentUser
 // import { UserContext } from '../../contexts/user.context';
-import Button from '../button/button.component';
+import Button, { button_type_classes } from '../button/button.component';
 import {
   createUserDocFromAuth,
   signAuthUserWithEmailandPassword,
@@ -79,10 +79,14 @@ const SignInForm = () => {
           value={password}
         />
         <div className="buttons-container">
-          <Button button_type="inverted" type="submit">
+          <Button button_type={button_type_classes.inverted} type="submit">
             Sign In
           </Button>
-          <Button type="button" button_type="google" onClick={signInWithGoogle}>
+          <Button
+            type="button"
+            button_type={button_type_classes.google}
+            onClick={signInWithGoogle}
+          >
             Google Sign In
           </Button>
         </div>
