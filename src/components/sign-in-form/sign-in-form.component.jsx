@@ -9,7 +9,7 @@ import {
   createUserDocFromAuth,
   signAuthUserWithEmailandPassword,
   signInWithGooglePopup,
-} from '../../util/firebase/firebase.utils';
+} from '../../utils/firebase/firebase.utils';
 
 const defaultFormFields = {
   email: '',

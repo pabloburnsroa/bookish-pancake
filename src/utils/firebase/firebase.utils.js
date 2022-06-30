@@ -85,12 +85,12 @@ export const createUserDocFromAuth = async (
   const userDocRef = doc(db, 'users', userAuth.uid);
   // console.log(userDocRef);
 
-  const userSnap = await getDoc(userDocRef);
+  const userSnapshot = await getDoc(userDocRef);
   // console.log(userSnap);
   // .exists() checks if that reference for that data in the collection exists
   // console.log(userSnap.exists());
 
-  if (!userSnap.exists()) {
+  if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
@@ -106,7 +106,7 @@ export const createUserDocFromAuth = async (
     }
   }
 
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserFromEmailandPassword = async (email, password) => {
@@ -121,5 +121,22 @@ export const signAuthUserWithEmailandPassword = async (email, password) => {
 
 export const signOutUser = async () => await signOut(auth);
 
+// Observer listener - returns back what is returned back from onAuthStateChanged()
+// onAuthStateChanged takes in 2 parameters - auth, callback you want to call everytime this auth state changes
 export const onAuthStateChangedListener = (callback) =>
+  // Open listener - permanently open to listen but we need to tell it to stop listening when the component it is in unmounts otherwise memory leak...
   onAuthStateChanged(auth, callback);
+
+// Promise based function call to get state of current user
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};

@@ -6,14 +6,16 @@ import { Route, Routes } from 'react-router-dom';
 import CategoriesPreview from '../categories-preview/categories-preview.component';
 import Category from '../category/category.component';
 
-import { fetchCategoriesAsync } from '../../store/categories/category.action';
+// import { fetchCategoriesAsync } from '../../store/categories/category.action';
+import { fetchCategoriesStart } from '../../store/categories/category.action';
 
 const Shop = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     // const getCategoriesMap = async () => {
     // const categoriesArray = await getCategoriesAndDocuments('categories');
-    dispatch(fetchCategoriesAsync());
+    /* onFetchCategories saga is listening to the fetchCategoriesStart action so we dispatch out from the shop component on mount*/
+    dispatch(fetchCategoriesStart());
     // };
     // getCategoriesMap();
   }, []);

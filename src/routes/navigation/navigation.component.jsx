@@ -3,7 +3,7 @@ import { Fragment, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 // import { UserContext } from '../../contexts/user.context';
-import { signOutUser } from '../../util/firebase/firebase.utils';
+import { signOutUser } from '../../utils/firebase/firebase.utils';
 
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 
