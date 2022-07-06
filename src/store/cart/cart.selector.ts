@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
+import { CartState } from './cart.reducer';
 
 // Will return slice of state
-const selectCartReducer = (state) => state.cart;
+const selectCartReducer = (state): CartState => state.cart;
 
 // Get cart items from slice of state
 export const selectCartItems = createSelector(
