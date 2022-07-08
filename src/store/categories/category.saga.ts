@@ -1,4 +1,5 @@
-import { takeLatest, all, call, put } from 'redux-saga/effects';
+// import { takeLatest, all, call, put } from 'redux-saga/effects';
+import { takeLatest, all, call, put } from 'typed-redux-saga/macro';
 
 import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
 import {
@@ -12,11 +13,11 @@ export function* fetchCategoriesAsync() {
   try {
     // yield - wait until you come back with something
     // call() - used anywhere you have a function and want to turn it into an effect, takes 2 arguments, method to call and paramaters
-    const categoriesArray = yield call(getCategoriesAndDocuments, 'categories');
+    const categoriesArray = yield* call(getCategoriesAndDocuments);
     // put() is used instead of dispatch
-    yield put(fetchCategoriesSuccess(categoriesArray));
+    yield* put(fetchCategoriesSuccess(categoriesArray));
   } catch (error) {
-    yield put(fetchCategoriesFailed(error));
+    yield* put(fetchCategoriesFailed(error as Error));
   }
 }
 

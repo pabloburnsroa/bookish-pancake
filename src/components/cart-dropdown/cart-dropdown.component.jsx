@@ -10,15 +10,18 @@ import CartItem from '../cart-item/cart-item.component';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCartItems } from '../../store/cart/cart.selector';
+import { useCallback } from 'react';
+
 const CartDropdown = () => {
+  // Component will re run when cartitems changes
   const cartItems = useSelector(selectCartItems);
   // const { cartItems, isCartOpen, setIsCartOpen } = useContext(CartContext);
   const navigate = useNavigate();
-
-  const goToCheckout = () => {
+  /* useCallBack() takes in 2 arguments - 1 callback function, 2 dependency array - it can help with performance optimization by memoizing the function (not the return of the function) */
+  const goToCheckout = useCallback(() => {
     navigate('/checkout');
     // setIsCartOpen(!isCartOpen);
-  };
+  }, []);
   return (
     <CartDropdownContainer>
       <CartItems>

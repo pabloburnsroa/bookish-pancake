@@ -1,22 +1,39 @@
-import { compose, createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware, Middleware } from 'redux';
 import logger from 'redux-logger';
 import { rootReducer } from './root-reducer';
 
 // REDUX-PERSIST
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, PersistConfig } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 // REDUX-THUNK
 // import thunk from 'redux-thunk';
 
 // REDUX-SAGA
-import createSagaMiddleware from '@redux-saga/core';
+import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './root-saga';
 
-const persistConfig = {
+// Type root state
+export type RootState = ReturnType<typeof rootReducer>;
+
+/*
+window object is typed
+we want to extend on this - declare a global
+*/
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+type ExtendedPersistConfig = PersistConfig<RootState> & {
+  whitelist: (keyof RootState)[];
+};
+
+const persistConfig: ExtendedPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['user'],
+  whitelist: ['user'],
 };
 
 // Create redux saga middleware
@@ -24,12 +41,14 @@ const sagaMiddleware = createSagaMiddleware();
 
 /* Only log middleware if we are in developement
     & filter out by boolean if we are not logging as logger will evaluate to false
-*/
+    TypeScript won't know that by filtering out truthy/falsy the middleware will narrow its type down to middleware. Need to tell typescript what this middleware is doing
+    */
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 const middleWares = [
   process.env.NODE_ENV !== 'production' && logger,
   // thunk,
   sagaMiddleware,
-].filter(Boolean);
+].filter((middleware): middleware is Middleware => Boolean(middleware));
 
 const composeEnhancer =
   (process.env.NODE_ENV !== 'production' &&
@@ -38,8 +57,6 @@ const composeEnhancer =
   compose;
 
 const composedEnhancers = composeEnhancer(applyMiddleware(...middleWares));
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(
   persistedReducer,

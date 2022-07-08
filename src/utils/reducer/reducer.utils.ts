@@ -32,7 +32,7 @@ export function withMatcher(actionCreator: Function) {
   return Object.assign(actionCreator, {
     type,
     match(action: AnyAction) {
-      return action.tye === type;
+      return action.type === type;
     },
   });
 }
@@ -52,7 +52,7 @@ export function createAction<T extends string, P>(
   payload: P
 ): ActionWithPayload<T, P>;
 
-export function createAction<T extends string, P>(
+export function createAction<T extends string>(
   type: T,
   payload: void
 ): Action<T>;

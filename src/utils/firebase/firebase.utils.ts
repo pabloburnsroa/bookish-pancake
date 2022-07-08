@@ -24,7 +24,7 @@ import {
   query,
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { Category } from '../../store/categories/category.types';
+// import { Category } from '../../store/categories/category.types';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -73,16 +73,28 @@ export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
   await batch.commit();
   console.log('Done');
 };
+type CategoryItem = {
+  id: number;
+  imageUrl: string;
+  name: string;
+  price: number;
+};
+
+type CategoryData = {
+  imageUrl: string;
+  items: CategoryItem[];
+  title: string;
+};
 
 // Get categories & documents from firestore
-export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
+export const getCategoriesAndDocuments = async (): Promise<CategoryData[]> => {
   const collectionRef = collection(db, 'categories');
   const q = query(collectionRef);
   const querySnapshot = await getDocs(q);
 
   // Typecast the docSnapshot.data() as Category type
   return querySnapshot.docs.map(
-    (docSnapshot) => docSnapshot.data() as Category
+    (docSnapshot) => docSnapshot.data() as CategoryData
   );
 };
 
