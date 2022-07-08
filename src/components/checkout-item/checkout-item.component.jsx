@@ -1,6 +1,7 @@
 // import { useContext } from 'react';
 // import { CartContext } from '../../contexts/cart.context';
 
+import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addItemToCart,
@@ -10,7 +11,7 @@ import {
 import { selectCartItems } from '../../store/cart/cart.selector';
 import './checkout-item.styles.scss';
 
-const CheckoutItem = ({ checkoutItem }) => {
+const CheckoutItem = memo(({ checkoutItem }) => {
   const { quantity, name, imageUrl, price } = checkoutItem;
   // const { addItemToCart, removeItemFromCart, clearItemFromCart } =
   //   useContext(CartContext);
@@ -46,6 +47,6 @@ const CheckoutItem = ({ checkoutItem }) => {
       </div>
     </div>
   );
-};
+});
 
 export default CheckoutItem;

@@ -27,13 +27,13 @@ declare global {
 }
 
 type ExtendedPersistConfig = PersistConfig<RootState> & {
-  whitelist: (keyof RootState)[];
+  blacklist: (keyof RootState)[];
 };
 
 const persistConfig: ExtendedPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'],
+  blacklist: ['user'],
 };
 
 // Create redux saga middleware
