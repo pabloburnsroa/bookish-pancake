@@ -4,6 +4,8 @@ import { useEffect, lazy, Suspense } from 'react';
 import { checkUserSession } from './store/user/user.action';
 import LoadingSpinner from './components/loading-spinner/loading-spinner.component';
 
+import { GlobalStyle } from './global.styles.js';
+
 const Navigation = lazy(() =>
   import('./routes/navigation/navigation.component')
 );
@@ -21,6 +23,7 @@ const App = () => {
   }, []);
   return (
     <Suspense fallback={<LoadingSpinner />}>
+      <GlobalStyle />
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />
